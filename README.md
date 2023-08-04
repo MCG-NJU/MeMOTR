@@ -1,1 +1,42 @@
 # MeMOTR
+
+The official implementation of [MeMOTR: Long-Term Memory-Augmented Transformer for Multi-Object Tracking](https://arxiv.org/abs/2307.15700), ICCV 2023.
+
+Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.github.io/).
+
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/memotr-long-term-memory-augmented-transformer/multi-object-tracking-on-dancetrack)](https://paperswithcode.com/sota/multi-object-tracking-on-dancetrack?p=memotr-long-term-memory-augmented-transformer)
+
+![MeMOTR](./assets/overview.png)
+
+**MeMOTR** is a fully-end-to-end memory-augmented multi-object tracker based on Transformer. We leverage long-term memory injection with a customized memory-attention layer, thus significantly improving the association performance.
+
+## Results
+
+### Multi-Object Tracking on the DanceTrack test set
+
+| Methods                  | HOTA | DetA | AssA |
+| ------------------------ | ---- | ---- | ---- |
+| MeMOTR                   | 68.5 | 80.5 | 58.4 |
+| MeMOTR (Deformable DETR) | 63.4 | 77.0 | 52.3 |
+
+
+
+### Multi-Object Tracking on the MOT17 test set
+
+| Methods | HOTA | DetA | AssA |
+| ------- | ---- | ---- | ---- |
+| MeMOTR  | 58.8 | 59.6 | 58.4 |
+
+
+
+### Multi-Category Multi-Object Tracking on the BDD100K val set
+
+| Methods | mTETA | mLocA | mAssocA |
+| ------- | ----- | ----- | ------- |
+| MeMOTR  | 53.6  | 38.1  | 56.7    |
+
+
+
+## Contact
+
+- Ruopeng Gao: ruopenggao@gmail.com
