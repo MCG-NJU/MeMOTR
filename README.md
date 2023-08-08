@@ -21,26 +21,26 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 ### Multi-Object Tracking on the DanceTrack test set
 
-| Methods                  | HOTA | DetA | AssA |
-| ------------------------ | ---- | ---- | ---- |
-| MeMOTR                   | 68.5 | 80.5 | 58.4 |
-| MeMOTR (Deformable DETR) | 63.4 | 77.0 | 52.3 |
+| Methods                  | HOTA | DetA | AssA | checkpoint     |
+| ------------------------ | ---- | ---- | ---- | -------------- |
+| MeMOTR                   | 68.5 | 80.5 | 58.4 | Coming Soon... |
+| MeMOTR (Deformable DETR) | 63.4 | 77.0 | 52.3 | Coming Soon... |
 
 
 
 ### Multi-Object Tracking on the MOT17 test set
 
-| Methods | HOTA | DetA | AssA |
-| ------- | ---- | ---- | ---- |
-| MeMOTR  | 58.8 | 59.6 | 58.4 |
+| Methods | HOTA | DetA | AssA | checkpoint     |
+| ------- | ---- | ---- | ---- | -------------- |
+| MeMOTR  | 58.8 | 59.6 | 58.4 | Coming Soon... |
 
 
 
 ### Multi-Category Multi-Object Tracking on the BDD100K val set
 
-| Methods | mTETA | mLocA | mAssocA |
-| ------- | ----- | ----- | ------- |
-| MeMOTR  | 53.6  | 38.1  | 56.7    |
+| Methods | mTETA | mLocA | mAssocA | checkpoint     |
+| ------- | ----- | ----- | ------- | -------------- |
+| MeMOTR  | 53.6  | 38.1  | 56.7    | Coming Soon... |
 
 
 
