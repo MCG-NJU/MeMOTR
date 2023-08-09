@@ -47,3 +47,13 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 ## Contact
 
 - Ruopeng Gao: ruopenggao@gmail.com
+
+
+
+## Acknowledgement
+
+- [Deformable DETR](https://github.com/fundamentalvision/Deformable-DETR)
+- [DAB DETR](https://github.com/IDEA-Research/DAB-DETR)
+- [MOTR](https://github.com/megvii-research/MOTR)
+- [TrackEval](https://github.com/JonathonLuiten/TrackEval)
+- [CV-Framework](https://github.com/HELLORPG/CV-Framework)
