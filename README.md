@@ -17,6 +17,29 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 - 2023.8.9: We release the main code. More configurations, scripts and checkpoints will be released soon :soon:.
 
 
+
+## Installation
+
+```shell
+conda create -n MeMOTR python=3.10
+conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
+conda install matplotlib pyyaml scipy tqdm tensorboard
+pip install opencv-python
+```
+
+You also need to compile the Deformable Attention CUDA ops:
+
+```shell
+# From https://github.com/fundamentalvision/Deformable-DETR
+cd ./models/ops/
+sh make.sh
+# You can test this ops if you need:
+python test.py
+```
+
+
+
+
 ## Results
 
 ### Multi-Object Tracking on the DanceTrack test set
