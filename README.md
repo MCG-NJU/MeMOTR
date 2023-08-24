@@ -37,7 +37,9 @@ sh make.sh
 python test.py
 ```
 
+## Pretrain
 
+We initialize our model with the official DAB-Deformable-DETR ( with R50 backbone) weights pretrained on the COCO dataset, you can also download the checkpoint we used [here](https://drive.google.com/file/d/17FxIGgIZJih8LWkGdlIOe9ZpVZ9IRxSj/view?usp=sharing). And then put the checkpoint at the root of this project dir.
 
 
 ## Results
