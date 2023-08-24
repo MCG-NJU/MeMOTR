@@ -47,7 +47,7 @@ Train MeMOTR with 8 GPUs on DanceTrack (recommended to use GPUs with >= 32 GB Me
 ```shell
 python -m torch.distributed.run --nproc_per_node=8 main.py --use-distributed --config-path ./configs/train_dancetrack.yaml --outputs-dir ./outputs/memotr_dancetrack/ --batch-size 1 --data-root <your data dir path>
 ```
-if your GPU's memory is below 32 GB, we also implement a memory-optimized version (by running option `--use-checkpoint`) as discussed in the paper, we use [gradient checkpoint](https://pytorch.org/docs/1.13/checkpoint.html?highlight=checkpoint#torch.utils.checkpoint.checkpoint) to reduce the allocated GPU memory. This following training script will only take about 10 GB GPU memory:
+if your GPU's memory is below than 32 GB, we also implement a memory-optimized version (by running option `--use-checkpoint`) as discussed in the paper, we use [gradient checkpoint](https://pytorch.org/docs/1.13/checkpoint.html?highlight=checkpoint#torch.utils.checkpoint.checkpoint) to reduce the allocated GPU memory. This following training script will only take about 10 GB GPU memory:
 ```shell
 python -m torch.distributed.run --nproc_per_node=8 main.py --use-distributed --config-path ./configs/train_dancetrack.yaml --outputs-dir ./outputs/memotr_dancetrack/ --batch-size 1 --data-root <your data dir path> --use-checkpoint
 ```
