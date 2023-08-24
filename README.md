@@ -41,6 +41,16 @@ python test.py
 
 We initialize our model with the official DAB-Deformable-DETR ( with R50 backbone) weights pretrained on the COCO dataset, you can also download the checkpoint we used [here](https://drive.google.com/file/d/17FxIGgIZJih8LWkGdlIOe9ZpVZ9IRxSj/view?usp=sharing). And then put the checkpoint at the root of this project dir.
 
+## Training
+
+Train MeMOTR with 8 GPUs on DanceTrack (recommended to use GPUs with >= 32 GB Memory, like V100-32GB or some else):
+```shell
+python -m torch.distributed.run --nproc_per_node=8 main.py --use-distributed --config-path ./configs/train_dancetrack.yaml --outputs-dir ./outputs/memotr_dancetrack/ --batch-size 1 --data-root <your data dir path>
+```
+if your GPU's memory is below 32 GB, we also implement a memory-optimized version (by running option `--use-checkpoint`) as discussed in the paper, we use [gradient checkpoint](https://pytorch.org/docs/1.13/checkpoint.html?highlight=checkpoint#torch.utils.checkpoint.checkpoint) to reduce the allocated GPU memory. This following training script will only take about 10 GB GPU memory:
+```shell
+python -m torch.distributed.run --nproc_per_node=8 main.py --use-distributed --config-path ./configs/train_dancetrack.yaml --outputs-dir ./outputs/memotr_dancetrack/ --batch-size 1 --data-root <your data dir path> --use-checkpoint
+```
 
 ## Results
 
