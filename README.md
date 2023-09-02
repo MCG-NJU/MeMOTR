@@ -14,7 +14,9 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 ## News :fire:
 
-- 2023.8.9: We release the main code. More configurations, scripts and checkpoints will be released soon :soon:.
+- 2023.08.24: We release the scripts and checkpoints on DanceTrack :dancer:.
+
+- 2023.08.09: We release the main code. More configurations, scripts and checkpoints will be released soon :soon:.
 
 
 
