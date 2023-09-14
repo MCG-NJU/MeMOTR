@@ -66,6 +66,18 @@ python -m torch.distributed.run --nproc_per_node=8 main.py --mode submit --submi
 ```
 Besides, if you just want to directly eval or submit through our trained checkpoint, you can get the checkpoint we used in the paper [here](https://drive.google.com/file/d/1_Xh-TDwwDIeacVEywwlYNvyRmhTKB5K2/view?usp=sharing). Then put this checkpoint into [./outputs/memotr_dancetrack/](./outputs/memotr_dancetrack/) and run the above scripts.
 
+## Scripts on MOT17
+
+### Submit
+
+For submitting, you can use the following scripts:
+
+```shell
+python -m torch.distributed.run --nproc_per_node=8 main.py --mode submit --config-path ./outputs/memotr_mot17/train/config.yaml --submit-dir ./outputs/memotr_mot17/ --submit-model <filename of the checkpoint> --use-distributed --data-root <your data dir path>
+```
+
+Also, you can download our trained checkpoint [here](https://drive.google.com/file/d/1MPZJfP91Pb1ThnX5dvxZ7tcjDH8t9hew/view?usp=drive_link). Then put it into [./outputs/memotr_mot17/](./outputs/memotr_mot17) and run the above script for submitting to get submit files of MOT17 test set.
+
 ## Results
 
 ### Multi-Object Tracking on the DanceTrack test set
@@ -79,9 +91,9 @@ Besides, if you just want to directly eval or submit through our trained checkpo
 
 ### Multi-Object Tracking on the MOT17 test set
 
-| Methods | HOTA | DetA | AssA | checkpoint     |
-| ------- | ---- | ---- | ---- | -------------- |
-| MeMOTR  | 58.8 | 59.6 | 58.4 | Coming Soon... |
+| Methods | HOTA | DetA | AssA | checkpoint                                                   |
+| ------- | ---- | ---- | ---- | ------------------------------------------------------------ |
+| MeMOTR  | 58.8 | 59.6 | 58.4 | [Google Drive](https://drive.google.com/file/d/1MPZJfP91Pb1ThnX5dvxZ7tcjDH8t9hew/view?usp=drive_link) |
 
 
 
