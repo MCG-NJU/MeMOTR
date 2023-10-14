@@ -134,7 +134,7 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 ```bibtex
 @InProceedings{MeMOTR,
     author    = {Gao, Ruopeng and Wang, Limin},
-    title     = {MeMOTR: Long-Term Memory-Augmented Transformer for Multi-Object Tracking},
+    title     = {{MeMOTR}: Long-Term Memory-Augmented Transformer for Multi-Object Tracking},
     booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
     month     = {October},
     year      = {2023},
