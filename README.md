@@ -39,6 +39,27 @@ sh make.sh
 python test.py
 ```
 
+## Data
+
+Please organize the datasets as following:
+```
+DATADIR/
+  ├── DanceTrack/
+  │ ├── train/
+  │ ├── val/
+  │ ├── test/
+  │ ├── train_seqmap.txt
+  │ ├── val_seqmap.txt
+  │ └── test_seqmap.txt
+  └── MOT17/
+  	├── images/
+    | ├── train/
+    | └── test/
+  	└── gts/
+      └── train/
+```
+
+
 ## Pretrain
 
 We initialize our model with the official DAB-Deformable-DETR (with R50 backbone) weights pretrained on the COCO dataset, you can also download the checkpoint we used [here](https://drive.google.com/file/d/17FxIGgIZJih8LWkGdlIOe9ZpVZ9IRxSj/view?usp=sharing). And then put the checkpoint at the root of this project dir.
