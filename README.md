@@ -51,12 +51,19 @@ DATADIR/
   │ ├── train_seqmap.txt
   │ ├── val_seqmap.txt
   │ └── test_seqmap.txt
-  └── MOT17/
+  ├── MOT17/
+  │ ├── images/
+  │ │ ├── train/
+  │ │ └── test/
+  │ └── gts/
+  │   └── train/
+  └── CrowdHuman/
     ├── images/
-    | ├── train/
-    | └── test/
+    │ ├── train/
+    │ └── val/
     └── gts/
-      └── train/
+      ├── train/
+      └── val/
 ```
 
 
