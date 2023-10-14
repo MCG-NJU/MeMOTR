@@ -52,10 +52,10 @@ DATADIR/
   │ ├── val_seqmap.txt
   │ └── test_seqmap.txt
   └── MOT17/
-  	├── images/
+    ├── images/
     | ├── train/
     | └── test/
-  	└── gts/
+    └── gts/
       └── train/
 ```
 
