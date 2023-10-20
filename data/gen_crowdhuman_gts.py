@@ -54,6 +54,7 @@ def gen_labels_crowd(data_root, label_root, ann_root):
 
 
 if __name__ == '__main__':
+    # You should change the path to your own path:
     data_val = "/data0/DatasetsForMeMOTR/CrowdHuman/images/val"
     label_val = "/data0/DatasetsForMeMOTR/CrowdHuman/gts/val"
     ann_val = "/data0/DatasetsForMeMOTR/CrowdHuman/annotation_val.odgt"

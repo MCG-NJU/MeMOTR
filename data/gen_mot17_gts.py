@@ -12,6 +12,7 @@ def mkdirs(d):
         os.makedirs(d)
 
 
+# You should change the path to your own path:
 seq_root = "/data0/DatasetsForMeMOTR/MOT17/images/train"
 label_root = "/data0/DatasetsForMeMOTR/MOT17/gts/train"
 mkdirs(label_root)

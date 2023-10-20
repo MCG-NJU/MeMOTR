@@ -41,7 +41,9 @@ python test.py
 
 ## Data
 
-Please organize the datasets as following:
+You should put the unzipped MOT17 and CrowdHuman datasets into the `DATADIR/MOT17/images/` and `DATADIR/CrowdHuman/images/`, respectively. And then generate the ground truth files by running the corresponding script: [./data/gen_mot17_gts.py](./data/gen_mot17_gts.py) and [./data/gen_crowdhuman_gts.py](./data/gen_crowdhuman_gts.py). 
+
+Finally, you should get the following dataset structure:
 ```
 DATADIR/
   ├── DanceTrack/
@@ -53,17 +55,17 @@ DATADIR/
   │ └── test_seqmap.txt
   ├── MOT17/
   │ ├── images/
-  │ │ ├── train/
-  │ │ └── test/
+  │ │ ├── train/     # unzip from MOT17
+  │ │ └── test/      # unzip from MOT17
   │ └── gts/
-  │   └── train/
+  │   └── train/     # generate by ./data/gen_mot17_gts.py
   └── CrowdHuman/
     ├── images/
-    │ ├── train/
-    │ └── val/
+    │ ├── train/     # unzip from CrowdHuman
+    │ └── val/       # unzip from CrowdHuman
     └── gts/
-      ├── train/
-      └── val/
+      ├── train/     # generate by ./data/gen_crowdhuman_gts.py
+      └── val/       # generate by ./data/gen_crowdhuman_gts.py
 ```
 
 
