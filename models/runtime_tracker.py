@@ -14,7 +14,7 @@ class RuntimeTracker:
     def __init__(self, det_score_thresh: float = 0.7, track_score_thresh: float = 0.6,
                  miss_tolerance: int = 5,
                  use_motion: bool = False, motion_min_length: int = 3, motion_max_length: int = 5,
-                 visualize: bool = False):
+                 visualize: bool = False, use_dab: bool = True):
         self.det_score_thresh = det_score_thresh
         self.track_score_thresh = track_score_thresh
         self.miss_tolerance = miss_tolerance
@@ -24,6 +24,7 @@ class RuntimeTracker:
         self.motion_min_length = motion_min_length
         self.motion_max_length = motion_max_length
         self.motions: Dict[Motion] = {}
+        self.use_dab = use_dab
 
     def update(self, model_outputs: dict, tracks: List[TrackInstances]):
         assert len(tracks) == 1
@@ -60,7 +61,17 @@ class RuntimeTracker:
         new_tracks.ref_pts = model_outputs["last_ref_pts"][0][:n_dets][new_tracks_idxes]
         new_tracks.scores = model_outputs["scores"][0][:n_dets][new_tracks_idxes]
         new_tracks.output_embed = model_outputs["outputs"][0][:n_dets][new_tracks_idxes]
-        new_tracks.query_embed = model_outputs["aux_outputs"][-1]["queries"][0][:n_dets][new_tracks_idxes]
+        # new_tracks.query_embed = model_outputs["aux_outputs"][-1]["queries"][0][:n_dets][new_tracks_idxes]
+        if self.use_dab:
+            new_tracks.query_embed = model_outputs["aux_outputs"][-1]["queries"][0][:n_dets][new_tracks_idxes]
+        else:
+            new_tracks.query_embed = torch.cat(
+                (
+                    model_outputs["det_query_embed"][new_tracks_idxes][:, :256],    # hack
+                    model_outputs["aux_outputs"][-1]["queries"][0][:n_dets][new_tracks_idxes]
+                ),
+                dim=-1
+            )
         new_tracks.disappear_time = torch.zeros((len(new_tracks.logits), ), dtype=torch.long)
         new_tracks.labels = torch.max(new_tracks.scores, dim=-1).indices
 

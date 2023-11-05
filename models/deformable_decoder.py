@@ -75,6 +75,10 @@ class DeformableDecoder(nn.Module):
         intermediate_reference_points = []
         intermediate_queries = []
         for lid, layer in enumerate(self.layers):
+            if (lid == 0) and (self.use_dab is False):       # for D-DETR ONLY
+                ref_pts_backup = reference_points.clone()
+                reference_points = reference_points[:, :, :2]
+                pass
             if reference_points.shape[-1] == 4:
                 reference_points_input = reference_points[:, :, None] \
                                          * torch.cat([src_valid_ratios, src_valid_ratios], -1)[:, None]
@@ -143,8 +147,14 @@ class DeformableDecoder(nn.Module):
                     new_reference_points[..., :2] = tmp[..., :2] + inverse_sigmoid(reference_points)
                     new_reference_points = new_reference_points.sigmoid()
                 if lid < self.merge_det_track_layer:
-                    reference_points = torch.cat((new_reference_points[:, :self.n_det_queries, :].detach(),
-                                                  reference_points[:, self.n_det_queries:, :]), dim=1)
+                    # reference_points = torch.cat((new_reference_points[:, :self.n_det_queries, :].detach(),
+                    #                               reference_points[:, self.n_det_queries:, :]), dim=1)
+                    if self.use_dab:
+                        reference_points = torch.cat((new_reference_points[:, :self.n_det_queries, :].detach(),
+                                                      reference_points[:, self.n_det_queries:, :]), dim=1)
+                    else:       # D-DETR
+                        reference_points = torch.cat((new_reference_points[:, :self.n_det_queries, :].detach(),
+                                                      ref_pts_backup[:, self.n_det_queries:, :]), dim=1)
                 else:
                     reference_points = new_reference_points.detach()
 

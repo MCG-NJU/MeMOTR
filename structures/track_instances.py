@@ -19,7 +19,8 @@ class TrackInstances:
             self.ref_pts = torch.zeros((0, 4))
             self.query_embed = torch.zeros((0, hidden_dim))
         else:
-            self.ref_pts = torch.zeros((0, 2))
+            # self.ref_pts = torch.zeros((0, 2))
+            self.ref_pts = torch.zeros((0, 4))
             self.query_embed = torch.zeros((0, 2 * hidden_dim))
         self.ids = torch.zeros((0,), dtype=torch.long)
         self.boxes = torch.zeros((0, 4))

@@ -25,7 +25,8 @@ from utils.utils import is_distributed, distributed_world_size
 
 class ClipCriterion:
     def __init__(self, num_classes, matcher: HungarianMatcher, n_det_queries, aux_loss: bool, weight: dict,
-                 max_frame_length: int, n_aux: int, merge_det_track_layer: int = 0, aux_weights: List = None, hidden_dim: int = 256):
+                 max_frame_length: int, n_aux: int, merge_det_track_layer: int = 0, aux_weights: List = None,
+                 hidden_dim: int = 256, use_dab: bool = True):
         """
         Init a criterion function.
 
@@ -44,6 +45,7 @@ class ClipCriterion:
         self.n_det_queries = n_det_queries
         self.max_frame_length = max_frame_length
         self.n_aux = n_aux
+        self.use_dab = use_dab
         self.frame_weights = [1.0] * self.max_frame_length  # if you want to set different weights for different frames
         self.aux_weights = aux_weights                      # different weights for different DETR layers
         self.hidden_dim = hidden_dim
@@ -216,7 +218,17 @@ class ClipCriterion:
             gt_idx = torch.as_tensor([gt_ids_to_idx[b][gt_id.item()] for gt_id in gt_ids], dtype=torch.long)
             trackinstances.ids = gt_ids
             trackinstances.matched_idx = gt_idx
-            trackinstances.query_embed = model_outputs["aux_outputs"][-1]["queries"][b][output_idx]
+            # trackinstances.query_embed = model_outputs["aux_outputs"][-1]["queries"][b][output_idx]
+            if self.use_dab:
+                trackinstances.query_embed = model_outputs["aux_outputs"][-1]["queries"][b][output_idx]
+            else:
+                trackinstances.query_embed = torch.cat(
+                    (
+                        model_outputs["det_query_embed"][output_idx][:, :self.hidden_dim],
+                        model_outputs["aux_outputs"][-1]["queries"][b][output_idx]
+                    ),
+                    dim=-1
+                )
             trackinstances.ref_pts = model_outputs["last_ref_pts"][b][output_idx]
             trackinstances.output_embed = model_outputs["outputs"][b][output_idx]
             trackinstances.boxes = model_outputs["pred_bboxes"][b][output_idx]
@@ -317,7 +329,17 @@ class ClipCriterion:
             detections.output_embed = model_outputs["outputs"][b][unmatched_indexes]
             detections.logits = model_outputs["pred_logits"][b][unmatched_indexes]
             detections.boxes = model_outputs["pred_bboxes"][b][unmatched_indexes]
-            detections.query_embed = model_outputs["aux_outputs"][-1]["queries"][b][unmatched_indexes]
+            # detections.query_embed = model_outputs["aux_outputs"][-1]["queries"][b][unmatched_indexes]
+            if self.use_dab:
+                detections.query_embed = model_outputs["aux_outputs"][-1]["queries"][b][unmatched_indexes]
+            else:
+                detections.query_embed = torch.cat(
+                    (
+                        model_outputs["det_query_embed"][unmatched_indexes][:, :self.hidden_dim],
+                        model_outputs["aux_outputs"][-1]["queries"][b][unmatched_indexes]
+                    ),
+                    dim=-1
+                )
             detections.ids = -torch.ones((len(detections.query_embed),), dtype=torch.long, device=self.device)
             detections.matched_idx = -torch.ones((len(detections.query_embed),), dtype=torch.long, device=self.device)
             detections.iou = torch.zeros((len(detections.ids,)), dtype=torch.float, device=self.device)
@@ -466,5 +488,6 @@ def build(config: dict):
         n_aux=config["NUM_DEC_LAYERS"]-1,
         merge_det_track_layer=(0 if "MERGE_DET_TRACK_LAYER" not in config else config["MERGE_DET_TRACK_LAYER"]),
         aux_weights=config["AUX_LOSS_WEIGHT"],
-        hidden_dim=config["HIDDEN_DIM"]
+        hidden_dim=config["HIDDEN_DIM"],
+        use_dab=config["USE_DAB"]
     )
