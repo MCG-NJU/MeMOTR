@@ -39,7 +39,7 @@ class Submitter:
                                       miss_tolerance=miss_tolerance,
                                       use_motion=use_motion,
                                       motion_min_length=motion_min_length, motion_max_length=motion_max_length,
-                                      visualize=visualize)
+                                      visualize=visualize, use_dab=use_dab)
         self.result_score_thresh = result_score_thresh
         self.motion_lambda = motion_lambda
         self.dataset = SeqDataset(seq_dir=self.seq_dir)

@@ -56,6 +56,12 @@ class QueryUpdater(nn.Module):
             num_layers=2
         )
 
+        if self.use_dab is False:   # D-DETR, use this module to update the
+            self.linear_pos1 = nn.Linear(256, 256)
+            self.linear_pos2 = nn.Linear(256, 256)
+            self.norm_pos = nn.LayerNorm(256)
+            self.activation = nn.ReLU(inplace=True)
+
         self.reset_parameters()
 
     def reset_parameters(self):
@@ -92,53 +98,58 @@ class QueryUpdater(nn.Module):
             if self.use_dab:
                 tracks[b].ref_pts[is_pos] = inverse_sigmoid(tracks[b][is_pos].boxes.detach().clone())
             else:
-                tracks[b].ref_pts[is_pos] = inverse_sigmoid(tracks[b][is_pos].boxes[:, :2].detach().clone())
+                tracks[b].ref_pts[is_pos] = inverse_sigmoid(tracks[b][is_pos].boxes.detach().clone())
+
+            query_pos = pos_to_pos_embed(tracks[b].ref_pts.sigmoid(), num_pos_feats=self.hidden_dim//2)
+            output_embed = tracks[b].output_embed
+            last_output_embed = tracks[b].last_output
+            long_memory = tracks[b].long_memory.detach()
+
+            # Confidence Weight
+            confidence_weight = self.confidence_weight_net(output_embed)
+
+            # Adaptive Aggregation
+            short_memory = self.short_memory_fusion(
+                torch.cat((
+                    confidence_weight * output_embed,
+                    last_output_embed
+                ), dim=-1)
+            )
+
+            # Query Feature Generate
+            query_pos = self.query_pos_head(query_pos)
+            q = short_memory + query_pos
+            k = long_memory + query_pos
+            tgt = output_embed
+            # Attention
+            tgt2 = self.memory_attn(q[None, :], k[None, :], tgt[None, :])[0][0, :]
+            tgt = tgt + self.memory_dropout(tgt2)
+            tgt = self.memory_norm(tgt)
+            tgt = self.memory_ffn(tgt)
+            # Long Memory ResNet
+            query_feat = long_memory + self.query_feat_dropout(tgt)
+            query_feat = self.query_feat_norm(query_feat)
+            query_feat = self.query_feat_ffn(query_feat)
+
+            # Update Long Memory
+            long_memory = (1 - self.long_memory_lambda) * long_memory + \
+                          self.long_memory_lambda * tracks[b].output_embed
+            tracks[b].long_memory = tracks[b].long_memory * ~is_pos.reshape((is_pos.shape[0], 1)) + \
+                                    long_memory * is_pos.reshape((is_pos.shape[0], 1))
+            # Update Last Outputs Embedding
+            tracks[b].last_output = tracks[b].last_output * ~is_pos.reshape((is_pos.shape[0], 1)) + \
+                                    output_embed * is_pos.reshape((is_pos.shape[0], 1))
 
             if self.use_dab:
-                query_pos = pos_to_pos_embed(tracks[b].ref_pts.sigmoid(), num_pos_feats=self.hidden_dim//2)
-                output_embed = tracks[b].output_embed
-                last_output_embed = tracks[b].last_output
-                long_memory = tracks[b].long_memory.detach()
-
-                # Confidence Weight
-                confidence_weight = self.confidence_weight_net(output_embed)
-
-                # Adaptive Aggregation
-                short_memory = self.short_memory_fusion(
-                    torch.cat((
-                        confidence_weight * output_embed,
-                        last_output_embed
-                    ), dim=-1)
-                )
-
-                # Query Feature Generate
-                query_pos = self.query_pos_head(query_pos)
-                q = short_memory + query_pos
-                k = long_memory + query_pos
-                tgt = output_embed
-                # Attention
-                tgt2 = self.memory_attn(q[None, :], k[None, :], tgt[None, :])[0][0, :]
-                tgt = tgt + self.memory_dropout(tgt2)
-                tgt = self.memory_norm(tgt)
-                tgt = self.memory_ffn(tgt)
-                # Long Memory ResNet
-                query_feat = long_memory + self.query_feat_dropout(tgt)
-                query_feat = self.query_feat_norm(query_feat)
-                query_feat = self.query_feat_ffn(query_feat)
-
-                # Update Long Memory
-                long_memory = (1 - self.long_memory_lambda) * long_memory + \
-                              self.long_memory_lambda * tracks[b].output_embed
-                tracks[b].long_memory = tracks[b].long_memory * ~is_pos.reshape((is_pos.shape[0], 1)) + \
-                                        long_memory * is_pos.reshape((is_pos.shape[0], 1))
-                # Update Last Outputs Embedding
-                tracks[b].last_output = tracks[b].last_output * ~is_pos.reshape((is_pos.shape[0], 1)) + \
-                                        output_embed * is_pos.reshape((is_pos.shape[0], 1))
-
+                tracks[b].query_embed[is_pos] = query_feat[is_pos]
             else:
-                raise ValueError(f"Do not support use_dab=False yet.")
-
-            tracks[b].query_embed[is_pos] = query_feat[is_pos]
+                tracks[b].query_embed[:, self.hidden_dim:][is_pos] = query_feat[is_pos]
+                # Update query pos, which is not appeared in DAB-D-DETR framework:
+                new_query_pos = self.linear_pos2(self.activation(self.linear_pos1(output_embed)))
+                query_pos = tracks[b].query_embed[:, :self.hidden_dim]
+                query_pos = query_pos + new_query_pos
+                query_pos = self.norm_pos(query_pos)
+                tracks[b].query_embed[:, :self.hidden_dim][is_pos] = query_pos[is_pos]
 
             if self.visualize:
                 torch.save(tracks[b].ref_pts.cpu(), "./outputs/visualize_tmp/query_updater/next_ref_pts.tensor")
@@ -163,9 +174,15 @@ class QueryUpdater(nn.Module):
             for b in range(len(new_tracks)):
                 # Update fields
                 new_tracks[b].last_output = new_tracks[b].output_embed
-                new_tracks[b].long_memory = new_tracks[b].query_embed
+                if self.use_dab:
+                    new_tracks[b].long_memory = new_tracks[b].query_embed
+                else:
+                    new_tracks[b].long_memory = new_tracks[b].query_embed[:, self.hidden_dim:]
                 unmatched_dets[b].last_output = unmatched_dets[b].output_embed
-                unmatched_dets[b].long_memory = unmatched_dets[b].query_embed
+                if self.use_dab:
+                    unmatched_dets[b].long_memory = unmatched_dets[b].query_embed
+                else:
+                    unmatched_dets[b].long_memory = unmatched_dets[b].query_embed[:, self.hidden_dim:]
                 if self.tp_drop_ratio == 0.0 and self.fp_insert_ratio == 0.0:
                     active_tracks = TrackInstances.cat_tracked_instances(previous_tracks[b], new_tracks[b])
                     active_tracks = TrackInstances.cat_tracked_instances(active_tracks, unmatched_dets[b])
@@ -212,7 +229,8 @@ class QueryUpdater(nn.Module):
                     if self.use_dab:
                         fake_tracks.ref_pts = torch.randn((1, 4), dtype=torch.float, device=device)
                     else:
-                        fake_tracks.ref_pts = torch.randn((1, 2), dtype=torch.float, device=device)
+                        # fake_tracks.ref_pts = torch.randn((1, 2), dtype=torch.float, device=device)
+                        fake_tracks.ref_pts = torch.randn((1, 4), dtype=torch.float, device=device)
                     fake_tracks.ids = torch.as_tensor([-2], dtype=torch.long, device=device)
                     fake_tracks.matched_idx = torch.as_tensor([-2], dtype=torch.long, device=device)
                     fake_tracks.boxes = torch.randn((1, 4), dtype=torch.float, device=device)
@@ -226,7 +244,11 @@ class QueryUpdater(nn.Module):
             # Eval only has B=1.
             assert len(previous_tracks) == 1 and len(new_tracks) == 1
             new_tracks[0].last_output = new_tracks[0].output_embed
-            new_tracks[0].long_memory = new_tracks[0].query_embed
+            # new_tracks[0].long_memory = new_tracks[0].query_embed
+            if self.use_dab:
+                new_tracks[0].long_memory = new_tracks[0].query_embed
+            else:
+                new_tracks[0].long_memory = new_tracks[0].query_embed[:, self.hidden_dim:]
             active_tracks = TrackInstances.cat_tracked_instances(previous_tracks[0], new_tracks[0])
             active_tracks = active_tracks[active_tracks.ids >= 0]
             tracks.append(active_tracks)

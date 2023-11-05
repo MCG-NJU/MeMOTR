@@ -181,7 +181,7 @@ class MeMOTR(nn.Module):
             "pred_logits": output_classes[-1],
             "pred_bboxes": output_bboxes[-1],
             "last_ref_pts": inverse_sigmoid(inter_references[-2, :, :, :]) if self.use_dab       # (B, Nd+Nq, 4)
-            else inverse_sigmoid(inter_references[-2, :, :, :2]),                                   # (B, Nd+Nq, 2)
+            else inverse_sigmoid(inter_references[-2, :, :, :]),                                 # (B, Nd+Nq, 2)
             "query_mask": query_mask,                   # (B, Nd+Nq)
             "det_query_embed": query_embed[0][:self.n_det_queries],
             "init_ref_pts": inverse_sigmoid(init_reference)
@@ -223,7 +223,8 @@ class MeMOTR(nn.Module):
         if self.use_dab:
             references = torch.zeros((len(tracks), max_len, 4))
         else:
-            references = torch.zeros((len(tracks), max_len, 2))
+            # references = torch.zeros((len(tracks), max_len, 2))
+            references = torch.zeros((len(tracks), max_len, 4))
         for i in range(len(tracks)):
             references[i, :len(tracks[i].ref_pts), :] = tracks[i].ref_pts
         return references
@@ -243,6 +244,11 @@ class MeMOTR(nn.Module):
 
     def get_reference_points(self, tracks: list[TrackInstances]):
         det_references = self.get_det_reference_points().repeat(len(tracks), 1, 1)                      # (B, Nd, 2)
+        if det_references.shape[-1] == 2:
+            det_references = torch.cat(
+                (det_references, torch.zeros_like(det_references, device=det_references.device)),
+                dim=-1
+            )
         track_references = self.get_track_reference_points(tracks=tracks).to(det_references.device)     # (B, Nq, 2)
         return torch.cat((det_references, track_references), dim=1)
 
