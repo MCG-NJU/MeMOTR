@@ -122,6 +122,7 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 
 
 ### Multi-Object Tracking on the SportsMOT test set
+*For all experiments, we do not use extra data (like CrowdHuman) for training.*
 
 | Methods                  | HOTA | DetA | AssA | checkpoint     |
 | ------------------------ | ---- | ---- | ---- | -------------- |
