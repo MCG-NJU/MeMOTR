@@ -14,6 +14,8 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 ## News :fire:
 
+- 2023.11.07: We add the performance on SportsMOT :basketball:.
+
 - 2023.08.24: We release the scripts and checkpoints on DanceTrack :dancer:.
 
 - 2023.08.09: We release the main code. More configurations, scripts and checkpoints will be released soon :soon:.
@@ -118,6 +120,13 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 | MeMOTR (Deformable DETR) | 63.4 | 77.0 | 52.3 | Coming Soon...                                                                                     |
 
 
+
+### Multi-Object Tracking on the SportsMOT test set
+
+| Methods                  | HOTA | DetA | AssA | checkpoint     |
+| ------------------------ | ---- | ---- | ---- | -------------- |
+| MeMOTR                   | /    | /    | /    | /              |
+| MeMOTR (Deformable DETR) | 68.8 | 82.0 | 57.8 | Coming Soon... |
 
 ### Multi-Object Tracking on the MOT17 test set
 
