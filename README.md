@@ -124,10 +124,10 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 ### Multi-Object Tracking on the SportsMOT test set
 *For all experiments, we do not use extra data (like CrowdHuman) for training.*
 
-| Methods                  | HOTA | DetA | AssA | checkpoint     |
-| ------------------------ | ---- | ---- | ---- | -------------- |
-| MeMOTR                   | /    | /    | /    | /              |
-| MeMOTR (Deformable DETR) | 68.8 | 82.0 | 57.8 | Coming Soon... |
+| Methods                  | HOTA | DetA | AssA | checkpoint                                                   |
+| ------------------------ | ---- | ---- | ---- | ------------------------------------------------------------ |
+| MeMOTR                   | /    | /    | /    | /                                                            |
+| MeMOTR (Deformable DETR) | 68.8 | 82.0 | 57.8 | [Google Drive](https://drive.google.com/file/d/14aKtLV5t09LrfegP7yiJk2zgb3bvaOND/view?usp=drive_link) |
 
 ### Multi-Object Tracking on the MOT17 test set
 
