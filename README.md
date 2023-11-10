@@ -90,7 +90,7 @@ python -m torch.distributed.run --nproc_per_node=8 main.py --use-distributed --c
 ### Submit and Evaluation
 You can use this script to evaluate the trained model on the DanceTrack val set:
 ```shell
-python main.py --mode eval --data-root <your data dir path> --eval-mode specific --eval-model <filename of the checkpoint> --eval-dir ./outputs/memotr_dancetrack/ --eval-threads 8
+python main.py --mode eval --data-root <your data dir path> --eval-mode specific --eval-model <filename of the checkpoint> --eval-dir ./outputs/memotr_dancetrack/ --eval-threads <your gpus num>
 ```
 for submitting, you can use the following scripts:
 ```shell
