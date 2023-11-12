@@ -26,7 +26,8 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 ## Installation
 
 ```shell
-conda create -n MeMOTR python=3.10
+conda create -n MeMOTR python=3.10  # create a virtual env
+conda activate MeMOTR               # activate the env
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
 conda install matplotlib pyyaml scipy tqdm tensorboard
 pip install opencv-python
