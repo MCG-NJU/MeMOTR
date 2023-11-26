@@ -128,7 +128,7 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 
 | Methods                  | HOTA | DetA | AssA | checkpoint                                                   |
 | ------------------------ | ---- | ---- | ---- | ------------------------------------------------------------ |
-| MeMOTR                   | /    | /    | /    | /                                                            |
+| MeMOTR                   | 70.0 | 83.1 | 59.1 | [Google Drive](https://drive.google.com/file/d/1sZkOi9r5WXk7uopUXQoF0H0t9o5VjUmw/view?usp=drive_link) |
 | MeMOTR (Deformable DETR) | 68.8 | 82.0 | 57.8 | [Google Drive](https://drive.google.com/file/d/14aKtLV5t09LrfegP7yiJk2zgb3bvaOND/view?usp=drive_link) |
 
 ### Multi-Object Tracking on the MOT17 test set
