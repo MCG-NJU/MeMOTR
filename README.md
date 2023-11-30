@@ -29,6 +29,9 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 conda create -n MeMOTR python=3.10  # create a virtual env
 conda activate MeMOTR               # activate the env
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
+# Our code is primarily running on PyTorch 1.13.1, 
+# but it should be also compatible with earlier PyTorch versions (e.g., 1.12.1).
+# However, too early pytorch version may cause some issue that need to be fixed, as we use some newly proposed feature of pytorch (e.g., ResNet50_Weights).
 conda install matplotlib pyyaml scipy tqdm tensorboard
 pip install opencv-python
 ```
