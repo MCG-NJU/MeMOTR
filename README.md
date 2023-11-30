@@ -27,6 +27,7 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 ```shell
 conda create -n MeMOTR python=3.10  # create a virtual env
+# I remember that I use some new features in Python 3.10, but I'm not exactly sure about this.
 conda activate MeMOTR               # activate the env
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
 # Our code is primarily running on PyTorch 1.13.1, 
