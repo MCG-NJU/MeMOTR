@@ -61,6 +61,13 @@ DATADIR/
   │ ├── train_seqmap.txt
   │ ├── val_seqmap.txt
   │ └── test_seqmap.txt
+  ├── SportsMOT/
+  │ ├── train/
+  │ ├── val/
+  │ ├── test/
+  │ ├── train_seqmap.txt
+  │ ├── val_seqmap.txt
+  │ └── test_seqmap.txt
   ├── MOT17/
   │ ├── images/
   │ │ ├── train/     # unzip from MOT17
@@ -123,7 +130,7 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 | Methods                  | HOTA | DetA | AssA | checkpoint                                                   |
 | ------------------------ | ---- | ---- | ---- | ------------------------------------------------------------ |
 | MeMOTR                   | 68.5 | 80.5 | 58.4 | [Google Drive](https://drive.google.com/file/d/1_Xh-TDwwDIeacVEywwlYNvyRmhTKB5K2/view?usp=sharing) |
-| MeMOTR (Deformable DETR) | 63.4 | 77.0 | 52.3 | [Google Driver](https://drive.google.com/file/d/1B72E6PGhJmtsx5BsEisJ8vXHXvBK1nTD/view?usp=drive_link) |
+| MeMOTR (Deformable DETR) | 63.4 | 77.0 | 52.3 | [Google Drive](https://drive.google.com/file/d/1B72E6PGhJmtsx5BsEisJ8vXHXvBK1nTD/view?usp=drive_link) |
 
 
 
