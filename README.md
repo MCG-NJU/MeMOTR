@@ -11,7 +11,7 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 **MeMOTR** is a fully-end-to-end memory-augmented multi-object tracker based on Transformer. We leverage long-term memory injection with a customized memory-attention layer, thus significantly improving the association performance.
 
-
+![Dance Demo](assets/dancetrack_demo.gif)
 
 ## News :fire:
 
