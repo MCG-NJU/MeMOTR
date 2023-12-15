@@ -92,7 +92,7 @@ TP_DROP_RATE: 0.0
 TRACK_SCORE_THRESH: 0.5
 UPDATE_THRESH: 0.5
 USE_CHECKPOINT: true
-USE_CROWDHUMAN: null
+USE_CROWDHUMAN: true    # we should set this to true if we want to use CrowdHuman dataset
 USE_DAB: true
 USE_DISTRIBUTED: true
 USE_MOTION: false
