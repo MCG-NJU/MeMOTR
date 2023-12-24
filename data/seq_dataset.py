@@ -9,8 +9,13 @@ from torch.utils.data import Dataset
 
 class SeqDataset(Dataset):
     def __init__(self, seq_dir: str):
-        image_paths = sorted(os.listdir(os.path.join(seq_dir, "img1")))
-        image_paths = [os.path.join(seq_dir, "img1", _) for _ in image_paths if ("jpg" in _) or ("png" in _)]
+        # a hack implementation for BDD100K and others:
+        if "BDD100K" in seq_dir:
+            image_paths = sorted(os.listdir(os.path.join(seq_dir)))
+            image_paths = [os.path.join(seq_dir, _) for _ in image_paths if ("jpg" in _) or ("png" in _)]
+        else:
+            image_paths = sorted(os.listdir(os.path.join(seq_dir, "img1")))
+            image_paths = [os.path.join(seq_dir, "img1", _) for _ in image_paths if ("jpg" in _) or ("png" in _)]
         self.image_paths = image_paths
         self.image_height = 800
         self.image_width = 1536
@@ -39,7 +44,8 @@ class SeqDataset(Dataset):
 
     def __getitem__(self, item):
         image = self.load(self.image_paths[item])
-        return self.process_image(image=image)
+        info = self.image_paths[item]
+        return self.process_image(image=image), info
 
     def __len__(self):
         return len(self.image_paths)

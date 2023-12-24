@@ -1,6 +1,6 @@
 # Copyright (c) Ruopeng Gao. All Rights Reserved.
 import os
-
+import json
 import torch
 import torch.nn as nn
 
@@ -60,7 +60,8 @@ class Submitter:
         tracks = [TrackInstances(hidden_dim=get_model(self.model).hidden_dim,
                                  num_classes=get_model(self.model).num_classes,
                                  use_dab=self.use_dab).to(self.device)]
-        for i, (image, ori_image) in enumerate(tqdm(self.dataloader, desc=f"Submit seq: {self.seq_name}")):
+        bdd100k_results = []    # for bdd100k, will be converted into json file, different from other datasets.
+        for i, ((image, ori_image), info) in enumerate(tqdm(self.dataloader, desc=f"Submit seq: {self.seq_name}")):
             # image: (1, C, H, W); ori_image: (1, H, W, C)
             frame = tensor_list_to_nested_tensor([image[0]]).to(self.device)
             res = self.model(frame=frame, tracks=tracks)
@@ -95,7 +96,10 @@ class Submitter:
             # to xyxy:
             tracks_result.boxes = box_cxcywh_to_xyxy(tracks_result.boxes)
             tracks_result.boxes = (tracks_result.boxes * torch.as_tensor([ori_w, ori_h, ori_w, ori_h], dtype=torch.float))
-            self.write_results(tracks_result=tracks_result, frame_idx=i)
+            if self.dataset_name == "BDD100K":
+                self.update_results(tracks_result=tracks_result, frame_idx=i, results=bdd100k_results, img_path=info[0])
+            else:
+                self.write_results(tracks_result=tracks_result, frame_idx=i)
 
             if self.visualize:
                 os.makedirs(f"./outputs/visualize_tmp/frame_{i+1}/", exist_ok=False)
@@ -109,6 +113,9 @@ class Submitter:
             os.makedirs(visualize_save_dir, exist_ok=True)
             os.system(f"mv ./outputs/visualize_tmp/* {visualize_save_dir}")
 
+        with open(os.path.join(self.predict_dir, '{}.json'.format(self.seq_name)), 'w', encoding='utf-8') as f:
+            json.dump(bdd100k_results, f)
+
         return
 
     @staticmethod
@@ -121,6 +128,44 @@ class Submitter:
         assert len(tracks.area) == len(tracks.ids), f"Tracks' 'area' should have the same dim with 'ids'"
         keep = tracks.area > thresh
         return tracks[keep]
+
+    def update_results(self, tracks_result: TrackInstances, frame_idx: int, results: list, img_path: str):
+        # Only be used for BDD100K:
+        bdd_cls2label = {
+            1: "pedestrian",
+            2: "rider",
+            3: "car",
+            4: "truck",
+            5: "bus",
+            6: "train",
+            7: "motorcycle",
+            8: "bicycle"
+        }
+        frame_result = {
+            "name": img_path.split("/")[-1],
+            "videoName": img_path.split("/")[-1][:-12],
+            # "frameIndex": int(img_path.split("/")[-1][:-4].split("-")[-1]) - 1
+            "frameIndex": frame_idx,
+            "labels": []
+        }
+        for i in range(len(tracks_result)):
+            x1, y1, x2, y2 = tracks_result.boxes[i].tolist()
+            ID = str(tracks_result.ids[i].item())
+            label = bdd_cls2label[tracks_result.labels[i].item() + 1]
+            frame_result["labels"].append(
+                {
+                    "id": ID,
+                    "category": label,
+                    "box2d": {
+                        "x1": x1,
+                        "y1": y1,
+                        "x2": x2,
+                        "y2": y2
+                    }
+                }
+            )
+        results.append(frame_result)
+        return
 
     def write_results(self, tracks_result: TrackInstances, frame_idx: int):
         with open(os.path.join(self.predict_dir, f"{self.seq_name}.txt"), "a") as file:
@@ -170,6 +215,8 @@ def submit(config: dict):
     )
     if dataset_name == "DanceTrack" or dataset_name == "SportsMOT":
         data_split_dir = path.join(data_root, dataset_name, dataset_split)
+    elif dataset_name == "BDD100K":
+        data_split_dir = path.join(data_root, dataset_name, "images/track/", dataset_split)
     else:
         data_split_dir = path.join(data_root, dataset_name, "images", dataset_split)
     seq_names = os.listdir(data_split_dir)
