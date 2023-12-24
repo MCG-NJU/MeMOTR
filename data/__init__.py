@@ -18,6 +18,7 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import RandomSampler, SequentialSampler, DataLoader
 from .dancetrack import build as build_dancetrack
 from .mot17 import build as build_mot17
+from .bdd100k import build as build_bbd100k
 from .mot import MOTDataset
 from .utils import collate_fn
 from utils.utils import is_distributed
@@ -32,6 +33,8 @@ def build_dataset(config: dict, split: str) -> MOTDataset:
         return build_mot17(config=config, split=split)
     elif config["DATASET"] == "MOT17_SPLIT":
         return build_mot17(config=config, split=split)
+    elif config["DATASET"] == "BDD100K":
+        return build_bbd100k(config=config, split=split)
     else:
         raise ValueError(f"Dataset {config['DATASET']} is not supported!")
 

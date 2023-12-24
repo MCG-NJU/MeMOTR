@@ -472,7 +472,8 @@ def build(config: dict):
         "DanceTrack": 1,
         "SportsMOT": 1,
         "MOT17": 1,
-        "MOT17_SPLIT": 1
+        "MOT17_SPLIT": 1,
+        "BDD100K": 8,
     }
     return ClipCriterion(
         num_classes=dataset_num_classes[config["DATASET"]],

@@ -103,6 +103,9 @@ def load_pretrained_model(model: nn.Module, pretrained_path: str, show_details: 
                         pretrained_state_dict[k] = pretrained_state_dict[k][1:3]
                     elif model_state_dict[k].shape[0] == 3:
                         pretrained_state_dict[k] = pretrained_state_dict[k][1:4]
+                    elif model_state_dict[k].shape[0] == 8:     # BDD100K
+                        pretrained_state_dict[k] = model_state_dict[k]
+                        # We directly do not use the pretrained class embed for BDD100K
                     else:
                         raise NotImplementedError('invalid shape: {}'.format(model_state_dict[k].shape))
                 else:
