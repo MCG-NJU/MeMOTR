@@ -154,9 +154,9 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 
 ### Multi-Category Multi-Object Tracking on the BDD100K val set
 
-| Methods | mTETA | mLocA | mAssocA | checkpoint     |
-| ------- | ----- | ----- | ------- | -------------- |
-| MeMOTR  | 53.6  | 38.1  | 56.7    | Coming Soon... |
+| Methods | mTETA | mLocA | mAssocA | checkpoint                                                   |
+| ------- | ----- | ----- | ------- | ------------------------------------------------------------ |
+| MeMOTR  | 53.6  | 38.1  | 56.7    | [Google Drive](https://drive.google.com/file/d/1vmDme7ANVOjwLrvBJasLHJ2EBEoinA-t/view?usp=drive_link) |
 
 
 
