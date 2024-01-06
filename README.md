@@ -15,6 +15,8 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 ## News :fire:
 
+- 2023.12.24: We release the code, scripts and checkpoints on BDD100K :car:.
+
 - 2023.12.13: We implement a [jupyter notebook](./tools/demo.ipynb) to run our model on your own video :movie_camera:.
 
 - 2023.11.07: We release the scripts and checkpoints on SportsMOT :basketball:.
