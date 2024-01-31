@@ -178,6 +178,10 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 }
 ```
 
+## Stars
+
+[![Star History Chart](https://api.star-history.com/svg?repos=MCG-NJU/MeMOTR&type=Date)](https://star-history.com/#MCG-NJU/MeMOTR&Date)
+
 ## Acknowledgement
 
 - [Deformable DETR](https://github.com/fundamentalvision/Deformable-DETR)
@@ -185,3 +189,4 @@ Also, you can directly download our trained checkpoint [here](https://drive.goog
 - [MOTR](https://github.com/megvii-research/MOTR)
 - [TrackEval](https://github.com/JonathonLuiten/TrackEval)
 - [CV-Framework](https://github.com/HELLORPG/CV-Framework)
+- [Star History](https://star-history.com/)
