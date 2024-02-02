@@ -113,8 +113,9 @@ class Submitter:
             os.makedirs(visualize_save_dir, exist_ok=True)
             os.system(f"mv ./outputs/visualize_tmp/* {visualize_save_dir}")
 
-        with open(os.path.join(self.predict_dir, '{}.json'.format(self.seq_name)), 'w', encoding='utf-8') as f:
-            json.dump(bdd100k_results, f)
+        if self.dataset_name == "BDD100K":
+            with open(os.path.join(self.predict_dir, '{}.json'.format(self.seq_name)), 'w', encoding='utf-8') as f:
+                json.dump(bdd100k_results, f)
 
         return
 
