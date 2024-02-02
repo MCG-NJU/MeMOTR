@@ -272,6 +272,14 @@ def transforms_for_train(coco_size: bool = False, overflow_bbox: bool = False, r
 
 def build(config: dict, split: str):
     if split == "train":
-        return MOT17(config=config, split=split, transform=transforms_for_train())
+        return MOT17(
+            config=config,
+            split=split,
+            transform=transforms_for_train(
+                coco_size=config["COCO_SIZE"],
+                overflow_bbox=config["OVERFLOW_BBOX"],
+                reverse_clip=config["REVERSE_CLIP"]
+            )
+        )
     else:
         raise NotImplementedError(f"MOT Dataset 'build' function do not support split {split}.")
