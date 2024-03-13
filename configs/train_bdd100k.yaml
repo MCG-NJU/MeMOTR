@@ -7,7 +7,7 @@ GIT_VERSION:
 MODE: train
 CONFIG_PATH:
 VISUALIZE: False
-AVAILABLE_GPUS: 0,1,2,3,4,5,6,7
+AVAILABLE_GPUS: 0,1
 DEVICE: cuda
 OUTPUTS_DIR: ./outputs/memotr_bdd100k/
 USE_DISTRIBUTED: False
@@ -37,7 +37,7 @@ EVAL_THREADS: 1
 EVAL_DATA_SPLIT: val
 
 DATASET: BDD100K
-DATA_ROOT:
+DATA_ROOT: /home/jovyan/pvc-nas-project-stellantis/Datasets/Public/bbd100/me-motr/
 DATA_PATH:
 NUM_WORKERS: 8
 BATCH_SIZE: 1
@@ -61,7 +61,7 @@ USE_DAB: True
 UPDATE_THRESH: 0.5
 LONG_MEMORY_LAMBDA: 0.01
 
-PRETRAINED_MODEL: dab_deformable_detr.pth
+PRETRAINED_MODEL: /home/jovyan/pvc-nas-project-stellantis/Datasets/Public/bbd100/checkpoints/memotr_bdd100k.pth
 
 SAMPLE_STEPS: [6, 10]
 SAMPLE_LENGTHS: [2, 3, 4]

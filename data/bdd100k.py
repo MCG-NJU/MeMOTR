@@ -59,8 +59,8 @@ class BDD100K(MOTDataset):
         self.config = config        # 配置信息
         self.transform = transform  # 数据需要经过的变换
         assert split == "train", f"Split {split} is not supported!"
-        self.images_dir = os.path.join(config["DATA_ROOT"], "BDD100K", "images/track/train/")
-        self.gts_dir = os.path.join(config["DATA_ROOT"], "BDD100K", "filter_labels/track/train/")
+        self.images_dir = os.path.join(config["DATA_ROOT"], "bdd100k", "images/track/train/")
+        self.gts_dir = os.path.join(config["DATA_ROOT"], "bdd100k", "filter_labels/track/train/")
         assert os.path.exists(self.images_dir), f"Dir {self.images_dir} is not exist."
 
         # 采样的逻辑：

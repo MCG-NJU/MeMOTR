@@ -114,9 +114,9 @@ def generate_txt(img_dir,label_dir,txt_path='bdd100k.train',split='train'):
 
 
 # '''for filter'''
-img_dir = './DatasetsForMeMOTR/BDD100K/images/track/'
-label_dir = './DatasetsForMeMOTR/BDD100K/labels/box_track_20/'
-save_label_dir = './DatasetsForMeMOTR/BDD100K/filter_labels/track'
+img_dir = '/home/jovyan/pvc-nas-project-stellantis/Datasets/Public/bbd100/me-motr/bdd100k/images/track/'
+label_dir = '/home/jovyan/pvc-nas-project-stellantis/Datasets/Public/bbd100/me-motr/bdd100k/labels/box_track_20/'
+save_label_dir = '/home/jovyan/pvc-nas-project-stellantis/Datasets/Public/bbd100/me-motr/bdd100k/filter_labels/track'
 split = 'train'
 convert(img_dir, split, label_dir, save_label_dir, filter_crowd=True, filter_ignore=True)
 
