@@ -15,6 +15,8 @@ Authors: [Ruopeng Gao](https://ruopenggao.com), [Limin Wang](https://wanglimin.g
 
 ## News :fire:
 
+- 2024.02.21: We add the results on SportsMOT in our [arxiv](https://arxiv.org/abs/2307.15700) version (supp part). We would appreciate it if you could CITE our trackers in the SportsMOT comparison :chart_with_upwards_trend:.
+
 - 2023.12.24: We release the code, scripts and checkpoints on BDD100K :car:.
 
 - 2023.12.13: We implement a [jupyter notebook](./tools/demo.ipynb) to run our model on your own video :movie_camera:.
