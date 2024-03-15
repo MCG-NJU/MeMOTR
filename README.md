@@ -127,6 +127,12 @@ python -m torch.distributed.run --nproc_per_node=8 main.py --mode submit --confi
 
 Also, you can directly download our trained checkpoint [here](https://drive.google.com/file/d/1MPZJfP91Pb1ThnX5dvxZ7tcjDH8t9hew/view?usp=drive_link). Then put it into [./outputs/memotr_mot17/](./outputs/memotr_mot17) and run the above script for submitting to get submit files of MOT17 test set.
 
+
+## Scripts on SportsMOT and other datasets
+
+You can replace the `--config-path` in [DanceTrack Scripts](#scripts-on-dancetrack). E.g., from `./configs/train_dancetrack.yaml` to `./configs/train_sportsmot.yaml` for training on SportsMOT.
+
+
 ## Results
 
 ### Multi-Object Tracking on the DanceTrack test set
