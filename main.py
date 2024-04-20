@@ -65,12 +65,16 @@ def parse_option():
     parser.add_argument("--use-motsynth", type=str)
     parser.add_argument("--use-crowdhuman", type=str)
     parser.add_argument("--motsynth-rate", type=float)
+    parser.add_argument("--sample-steps", type=int, nargs="*")
+    parser.add_argument("--sample-lengths", type=int, nargs="*")
 
     # Training setting：
     parser.add_argument("--weight-decay", type=float)
     parser.add_argument("--lr", type=float)
     parser.add_argument("--lr-points", type=float)
     parser.add_argument("--lr-backbone", type=float)
+    parser.add_argument("--epochs", type=int)
+    parser.add_argument("--lr-drop-milestones", type=int, nargs="*")
 
     # Submit setting：
     parser.add_argument("--miss-tolerance", type=float)
